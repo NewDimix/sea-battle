@@ -326,6 +326,16 @@ window.onload = function load() {
         });
     }
 
+    for (var i = 0; i < fieldArray.length; i++) {
+        newFieldArray.push(fieldArray[i]);
+
+        fieldArray[i].addEventListener('contextmenu', function(e) {
+            var target = (newFieldArray.indexOf(e.target)+1);
+            fieldArray[target-1].classList.add('slip');
+            e.preventDefault();
+        });
+    }
+
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
