@@ -237,6 +237,95 @@ window.onload = function load() {
         }
     }
 
+    var newFieldArray = [];
+    var hitsArray = [''];
+    var kills = 0;
+    var gameOver = false;
+
+    for (var i = 0; i < fieldArray.length; i++) {
+    newFieldArray.push(fieldArray[i]);
+
+        fieldArray[i].addEventListener('click', function(e) {
+            if (gameOver == true) {
+                alert('Игра окончена.');
+                return false;
+            }
+
+            var target = (newFieldArray.indexOf(e.target)+1);
+            console.log('клик по ' + target + ' полю');
+            var added = false;
+            var repeat = false;
+            var hit = false;
+            console.log('added = ' + added);
+            console.log('repeat = ' + repeat);
+            console.log('hit = ' + hit);
+            console.log('hitsArray.length = ' + hitsArray.length);
+            console.log('hitsArray = ' + hitsArray);
+
+            checkShot:
+            for (var z = 0; z < hitsArray.length; z++) {
+                console.log('проверка был ли клик уже по этой ячейке, проверка №' + z);
+
+                if ((target == hitsArray[z])) {
+                    console.log('клик по этой ячейке был');
+                    repeat = true;
+                    break checkShot;
+                }
+            }
+
+            if (repeat==false) {
+                checkHit:
+                for (var y = 0; y < ships.length; y++) {
+                    console.log('запуск цикла, корабль = ' + y);
+
+                    for (var x = 0; x < ships[y].dataLength; x++) {
+                        console.log('запуск цикла, ячейка корабля = ' + x);
+
+                        if (target == ships[y]["position" + x]) {
+                            fieldArray[target-1].classList.add('hitting');
+                            console.log('попадание');
+                            ships[y].hits = ships[y].hits + 1;
+                            hitsArray.push(target);
+                            console.log('номер ячейки добавлен в массив');
+                            console.log('hitsArray.length = ' + hitsArray.length);
+                            console.log('hitsArray = ' + hitsArray);
+                            added = true;
+                            hit = true;
+
+                            if (ships[y].hits == ships[y].dataLength) {
+                                console.log('убил');
+                                alert('Убил!');
+                                ships[y].killed = true;
+                                kills = kills + 1;
+                            }
+
+                            break checkHit;
+                        }
+                    }
+                }
+
+                if (hit == false) {
+                    fieldArray[target-1].classList.add('slip');
+                    console.log('ne popal');
+                }
+            }
+
+            if (added == false && repeat == false) {
+                hitsArray.push(target);
+                console.log('номер ячейки добавлен в массив');
+                console.log('hitsArray.length = ' + hitsArray.length);
+                console.log('hitsArray = ' + hitsArray);
+                added = true;
+            }
+
+            if (kills == ships.length) {
+                alert('Winner winner chicken dinner!');
+                alert('Победа за ' + (hitsArray.length-1) + ' ходов. Можно было и лучше...');
+                gameOver = true;
+            }
+        });
+    }
+
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
