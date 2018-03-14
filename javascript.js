@@ -252,22 +252,13 @@ window.onload = function load() {
             }
 
             var target = (newFieldArray.indexOf(e.target)+1);
-            console.log('клик по ' + target + ' полю');
             var added = false;
             var repeat = false;
             var hit = false;
-            console.log('added = ' + added);
-            console.log('repeat = ' + repeat);
-            console.log('hit = ' + hit);
-            console.log('hitsArray.length = ' + hitsArray.length);
-            console.log('hitsArray = ' + hitsArray);
 
             checkShot:
             for (var z = 0; z < hitsArray.length; z++) {
-                console.log('проверка был ли клик уже по этой ячейке, проверка №' + z);
-
                 if ((target == hitsArray[z])) {
-                    console.log('клик по этой ячейке был');
                     repeat = true;
                     break checkShot;
                 }
@@ -276,25 +267,19 @@ window.onload = function load() {
             if (repeat==false) {
                 checkHit:
                 for (var y = 0; y < ships.length; y++) {
-                    console.log('запуск цикла, корабль = ' + y);
-
                     for (var x = 0; x < ships[y].dataLength; x++) {
-                        console.log('запуск цикла, ячейка корабля = ' + x);
-
                         if (target == ships[y]["position" + x]) {
                             fieldArray[target-1].classList.add('hitting');
-                            console.log('попадание');
+                            log('Попадание', target);
+                            dataAlert('Попадание', 'hit');
                             ships[y].hits = ships[y].hits + 1;
                             hitsArray.push(target);
-                            console.log('номер ячейки добавлен в массив');
-                            console.log('hitsArray.length = ' + hitsArray.length);
-                            console.log('hitsArray = ' + hitsArray);
                             added = true;
                             hit = true;
 
                             if (ships[y].hits == ships[y].dataLength) {
-                                console.log('убил');
-                                alert('Убил!');
+                                log('<b>Убил</b>', target);
+                                dataAlert('Убил!', 'kill');
                                 ships[y].killed = true;
                                 kills = kills + 1;
                             }
@@ -306,21 +291,19 @@ window.onload = function load() {
 
                 if (hit == false) {
                     fieldArray[target-1].classList.add('slip');
-                    console.log('ne popal');
+                    log('Промах', target);
+//                    dataAlert('Промах', 'slip');
                 }
             }
 
             if (added == false && repeat == false) {
                 hitsArray.push(target);
-                console.log('номер ячейки добавлен в массив');
-                console.log('hitsArray.length = ' + hitsArray.length);
-                console.log('hitsArray = ' + hitsArray);
                 added = true;
             }
 
             if (kills == ships.length) {
-                alert('Winner winner chicken dinner!');
                 alert('Победа за ' + (hitsArray.length-1) + ' ходов. Можно было и лучше...');
+                log('Winner winner chicken dinner!', target);
                 gameOver = true;
             }
         });
@@ -334,6 +317,80 @@ window.onload = function load() {
             fieldArray[target-1].classList.add('slip');
             e.preventDefault();
         });
+    }
+
+    function dataAlert(text, mode) {
+        if (document.querySelector('.alert')) {
+            document.querySelector('.alert').parentNode.removeChild(document.querySelector('.alert'));
+        }
+
+        var p = document.createElement('p');
+        var table = document.querySelector('table');
+
+        if (mode == "slip") {
+            p.className = "alert alert-slip";
+        }
+        if (mode == "hit") {
+            p.className = "alert alert-hit";
+        }
+        if (mode == "kill") {
+            p.className = "alert alert-kill";
+        }
+
+        p.innerHTML = text;
+        table.appendChild(p);
+        setTimeout(function(){
+            document.querySelector('.alert').parentNode.removeChild(document.querySelector('.alert'));
+        },1500);
+    }
+
+    function log(text, target) {
+        var column = target % 10;
+        console.log('column = ' + column);
+        if (column != 0) {
+            var row = Math.floor(target/10) + 1;
+        } else {
+            var row = Math.floor(target/10);
+        }
+        console.log('row = ' + row);
+        switch (column) {
+            case 1:
+                column = "A";
+                break;
+            case 2:
+                column = "B";
+                break;
+            case 3:
+                column = "C";
+                break;
+            case 4:
+                column = "D";
+                break;
+            case 5:
+                column = "E";
+                break;
+            case 6:
+                column = "F";
+                break;
+            case 7:
+                column = "G";
+                break;
+            case 8:
+                column = "H";
+                break;
+            case 9:
+                column = "I";
+                break;
+            case 0:
+                column = "J";
+                break;
+            default:
+                alert('Ошибка');
+        }
+
+        var p = document.createElement('p');
+        p.innerHTML = "<b>" + column + row + "</b>" + " " + text;
+        logs.insertBefore(p, logs.firstChild);
     }
 
     function getRandomInt(min, max) {
