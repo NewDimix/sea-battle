@@ -17,15 +17,51 @@ table {
     position: relative;
 }
 
+.enemy-field {
+    position: relative;
+    z-index: 0;
+}
+
+.enemy-field.waiting:before {
+    content: 'Необходимо расставить свои корабли';
+    position: absolute;
+    color: white;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: red;
+    z-index: 1;
+}
+
+.enemy-field td:hover {
+    background-image: url(aim-icon.svg);
+    background-position: center;
+    background-size: 80%;
+    background-repeat: no-repeat;
+}
+
 td {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     border: 1px solid black;
     position: relative;
 }
 
 td.kill {
     background-color: fuchsia;
+}
+
+td.user-ship-g {
+    background-color: grey;
+}
+
+td.user-ship-b {
+    background-color: black;
+}
+
+td.user-ship-n {
+    background-color: rgba(128, 128, 128, 0.5);
 }
 
 td.slip:before {
@@ -67,6 +103,13 @@ td.hitting:after {
     background-color: black;
 }
 
+td.aim {
+    background-image: url(aim-icon.svg);
+    background-position: center;
+    background-size: 80%;
+    background-repeat: no-repeat;
+}
+
 .logs {
     display: inline-block;
     vertical-align: top;
@@ -94,7 +137,7 @@ td.hitting:after {
 .logs__content {
     border: 2px solid black;
     padding: 10px;
-    height: 570px;
+    height: 370px;
     overflow-y: auto;
 }
 
