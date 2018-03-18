@@ -1,0 +1,235 @@
+@font-face {
+    font-family: 'LifeIsStrangeRU';
+    src: url('../fonts/LifeIsStrangeRU.woff') format('woff'),
+       url('../fonts/LifeIsStrangeRU.woff2') format('woff2'),
+       url('../fonts/LifeIsStrangeRU.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    text-align: center;
+    font-size: 0;
+    font-family: LifeIsStrangeRU;
+    color: #09057e;
+    background-image: url(../img/bg.jpg);
+}
+
+h1 {
+    text-align: center;
+    font-size: 35px;
+}
+
+h2 {
+    font-size: 25px;
+}
+
+.enemy-field-wrap, .user-field-wrap {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.area {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    position: relative;
+    border: 2px solid #09057e;
+    background-color: #ebeff2;
+}
+
+.enemy-field {
+    position: relative;
+    z-index: 0;
+    margin-right: 10px;
+}
+
+.enemy-field.waiting:before {
+    content: 'Ожидание';
+    position: absolute;
+    color: white;
+    font-size: 50px;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(255, 0, 0, 0.6);
+    z-index: 1;
+}
+
+.enemy-field span:hover {
+    background-image: url(../img/aim-icon.svg);
+    background-position: center;
+    background-size: 80%;
+    background-repeat: no-repeat;
+}
+
+.area__row span {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    position: relative;
+}
+
+.area__row:not(:first-child) span {
+    border-top: 1px solid rgba(9, 5, 126, 0.8);
+}
+
+.area__row span:not(:last-child) {
+    border-right: 1px solid rgba(9, 5, 126, 0.8);
+}
+
+.area span.kill {
+    background-color: fuchsia;
+}
+
+.area span.user-ship-g {
+    background-color: rgba(9, 5, 126, 0.4);
+}
+
+.area span.user-ship-b {
+    background-image: url(../img/ship.png);
+    background-size: contain;
+}
+
+.area span.user-ship-n {
+    background-image: none;
+    background-color: rgba(9, 5, 126, 0.1);
+}
+
+.area span.slip:before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #09057e;
+}
+
+.area span.hitting {
+    background-image: url(../img/ship.png);
+    background-size: contain;
+}
+
+.area span.hitting:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: rotate(45deg);
+    width: 100%;
+    height: 4px;
+    background-color: red;
+    border-radius: 100px;
+}
+
+.area span.hitting:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: rotate(-45deg);
+    width: 100%;
+    height: 4px;
+    background-color: red;
+    border-radius: 100px;
+}
+
+.area span.aim {
+    background-image: url(aim-icon.svg);
+    background-position: center;
+    background-size: 80%;
+    background-repeat: no-repeat;
+}
+
+.logs {
+    display: inline-block;
+    vertical-align: bottom;
+    text-align: left;
+    width: 150px;
+    padding: 0;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.logs p {
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 0.8;
+    transition: all .6s ease;
+}
+
+.logs p:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+.logs p:first-child {
+    opacity: 1;
+}
+
+.logs__title {
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.logs__content {
+    border-top: 2px solid rgba(9, 5, 126, 0.95);
+    border-bottom: 2px solid rgba(9, 5, 126, 0.95);
+    padding: 10px;
+    height: 370px;
+    overflow-y: auto;
+    text-shadow:
+        -0   -1px 6px #EBEFF2,
+         0   -1px 6px #EBEFF2,
+        -0    1px 6px #EBEFF2,
+         0    1px 6px #EBEFF2,
+        -1px -0   6px #EBEFF2,
+         1px -0   6px #EBEFF2,
+        -1px  0   6px #EBEFF2,
+         1px  0   6px #EBEFF2,
+        -1px -1px 6px #EBEFF2,
+         1px -1px 6px #EBEFF2,
+        -1px  1px 6px #EBEFF2,
+         1px  1px 6px #EBEFF2,
+        -1px -1px 6px #EBEFF2,
+         1px -1px 6px #EBEFF2,
+        -1px  1px 6px #EBEFF2,
+         1px  1px 6px #EBEFF2;
+}
+
+.alert {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 0;
+    margin-bottom: 0;
+    color: white;
+    padding: 20px;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-radius: 20px;
+    font-size: 30px;
+}
+
+.alert-slip {
+    background-color: red;
+}
+
+.alert-hit {
+    background-color: green;
+}
+
+.alert-kill {
+    background-color: fuchsia;
+}
+
+.copyright {
+    margin-top: 20px;
+    font-size: 16px;
+}

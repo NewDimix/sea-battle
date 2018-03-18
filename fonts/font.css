@@ -1,0 +1,15 @@
+@font-face {
+  font-family: '11525';
+  src: url('11525.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LifeIsStrangeRU';
+  src: url('LifeIsStrangeRU.woff') format('woff'),
+       url('LifeIsStrangeRU.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+

@@ -1,6 +1,6 @@
 window.onload = function load() {
-    var enemyArray = document.querySelectorAll('.enemy-field td');
-    var userArray = document.querySelectorAll('.user-field td');
+    var enemyArray = document.querySelectorAll('.enemy-field span');
+    var userArray = document.querySelectorAll('.user-field span');
 
     var enemyShips = [];
     var userShips = [];
@@ -1127,7 +1127,7 @@ window.onload = function load() {
         }
 
         var p = document.createElement('p');
-        var table = document.querySelector('table');
+        var table = document.querySelector('.enemy-field');
 
         if (mode == "slip") {
             p.className = "alert alert-slip";
