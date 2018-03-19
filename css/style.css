@@ -7,21 +7,47 @@
     font-style: normal;
 }
 
+html {
+    height: 100%;
+}
+
 body {
     text-align: center;
     font-size: 0;
     font-family: LifeIsStrangeRU;
     color: #09057e;
     background-image: url(../img/bg.jpg);
+    background-position: top center;
+    background-size: 2080px;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+main {
+    flex: 1 0 auto;
+    padding-left: 7px;
+}
+
+footer {
+    flex: 0 0 auto;
+    padding-bottom: 10px;
 }
 
 h1 {
     text-align: center;
-    font-size: 35px;
+    font-size: 45px;
+    text-transform: uppercase;
+    margin-bottom: 91px;
 }
 
 h2 {
     font-size: 25px;
+    margin-top: 0;
+    margin-bottom: 5px;
 }
 
 .enemy-field-wrap, .user-field-wrap {
@@ -35,49 +61,71 @@ h2 {
     margin-right: auto;
     border-collapse: collapse;
     position: relative;
-    border: 2px solid #09057e;
     background-color: #ebeff2;
+    border-style: solid;
+    border-width: 4px;
+    border-image: url(../img/border.png) 10 repeat;
 }
 
-.enemy-field {
-    position: relative;
-    z-index: 0;
-    margin-right: 10px;
-}
-
-.enemy-field.waiting:before {
-    content: 'Ожидание';
+.area__alert {
     position: absolute;
-    color: white;
+    color: #09057e;
     font-size: 50px;
     left: 0;
     top: 0;
     bottom: 0;
     right: 0;
-    background-color: rgba(255, 0, 0, 0.6);
+    background-color: rgba(235, 239, 242, 0.5);
     z-index: 1;
+}
+
+.area__alert p {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    transform: translateY(-50%);
+    margin-top: 0;
+    margin-bottom: 0;
+    text-shadow:
+        -0   -1px 6px #EBEFF2,
+         0   -1px 6px #EBEFF2,
+        -0    1px 6px #EBEFF2,
+         0    1px 6px #EBEFF2,
+        -1px -0   6px #EBEFF2,
+         1px -0   6px #EBEFF2,
+        -1px  0   6px #EBEFF2,
+         1px  0   6px #EBEFF2,
+        -1px -1px 6px #EBEFF2,
+         1px -1px 6px #EBEFF2,
+        -1px  1px 6px #EBEFF2,
+         1px  1px 6px #EBEFF2,
+        -1px -1px 6px #EBEFF2,
+         1px -1px 6px #EBEFF2,
+        -1px  1px 6px #EBEFF2,
+         1px  1px 6px #EBEFF2;
+}
+
+.enemy-field {
+    position: relative;
+    z-index: 0;
+    margin-right: 33px;
 }
 
 .enemy-field span:hover {
     background-image: url(../img/aim-icon.svg);
     background-position: center;
-    background-size: 80%;
+    background-size: 95%;
     background-repeat: no-repeat;
 }
 
 .area__row span {
     display: inline-block;
-    width: 40px;
+    width: 41px;
     height: 40px;
     position: relative;
-}
-
-.area__row:not(:first-child) span {
-    border-top: 1px solid rgba(9, 5, 126, 0.8);
-}
-
-.area__row span:not(:last-child) {
-    border-right: 1px solid rgba(9, 5, 126, 0.8);
+    border-style: solid;
+    border-width: 1px;
+    border-image: url(../img/border.png) 11 repeat;
 }
 
 .area span.kill {
@@ -98,45 +146,59 @@ h2 {
     background-color: rgba(9, 5, 126, 0.1);
 }
 
+.area span.noneUser:before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background-image: url(../img/none.png);
+    background-size: 100%;
+}
+
 .area span.slip:before {
     content: '';
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: #09057e;
+    width: 10px;
+    height: 10px;
+    background-image: url(../img/dot.png);
+    background-size: 100%;
 }
 
 .area span.hitting {
     background-image: url(../img/ship.png);
     background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .area span.hitting:before {
     content: '';
     position: absolute;
     left: 0;
-    top: 50%;
+    top: 46%;
     transform: rotate(45deg);
     width: 100%;
     height: 4px;
     background-color: red;
-    border-radius: 100px;
+    border-radius: 50%;
 }
 
 .area span.hitting:after {
     content: '';
     position: absolute;
     left: 0;
-    top: 50%;
+    top: 46%;
     transform: rotate(-45deg);
     width: 100%;
     height: 4px;
     background-color: red;
-    border-radius: 100px;
+    border-radius: 50%;
 }
 
 .area span.aim {
@@ -150,10 +212,10 @@ h2 {
     display: inline-block;
     vertical-align: bottom;
     text-align: left;
-    width: 150px;
+    width: 180px;
     padding: 0;
     font-size: 16px;
-    margin-right: 10px;
+    margin-right: 33px;
 }
 
 .logs p {
@@ -179,7 +241,6 @@ h2 {
 
 .logs__content {
     border-top: 2px solid rgba(9, 5, 126, 0.95);
-    border-bottom: 2px solid rgba(9, 5, 126, 0.95);
     padding: 10px;
     height: 370px;
     overflow-y: auto;
@@ -202,31 +263,8 @@ h2 {
          1px  1px 6px #EBEFF2;
 }
 
-.alert {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    margin-top: 0;
-    margin-bottom: 0;
-    color: white;
-    padding: 20px;
-    text-transform: uppercase;
-    font-weight: 700;
-    border-radius: 20px;
-    font-size: 30px;
-}
-
-.alert-slip {
-    background-color: red;
-}
-
-.alert-hit {
-    background-color: green;
-}
-
-.alert-kill {
-    background-color: fuchsia;
+.alerts {
+    font-size: 50px;
 }
 
 .copyright {

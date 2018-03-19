@@ -302,7 +302,7 @@ window.onload = function load() {
 
         enemyArray[i].addEventListener('click', function(e) {
             if (gameOver == true) {
-                alert('Игра окончена.');
+                dataAlert('Игра окончена.', 'game-over');
                 return false;
             }
 
@@ -325,8 +325,7 @@ window.onload = function load() {
                     for (var x = 0; x < enemyShips[y].dataLength; x++) {
                         if (target == enemyShips[y]["position" + x]) {
                             enemyArray[target-1].classList.add('hitting');
-                            log('Попадание', target);
-                            dataAlert('Попадание', 'hit');
+                            log('Попадание!', target);
                             enemyShips[y].hits = enemyShips[y].hits + 1;
                             hitsArray.push(target);
                             added = true;
@@ -334,9 +333,11 @@ window.onload = function load() {
 
                             if (enemyShips[y].hits == enemyShips[y].dataLength) {
                                 log('<b>Убил</b>', target);
-                                dataAlert('Убил!', 'kill');
+                                dataAlert('УБИЛ!', 'kill');
                                 enemyShips[y].killed = true;
                                 kills = kills + 1;
+                            } else {
+                                dataAlert('Попадание', 'hit');
                             }
 
                             break checkHit;
@@ -348,7 +349,7 @@ window.onload = function load() {
                     enemyArray[target-1].classList.add('slip');
                     log('Промах', target);
                     compShot();
-//                    dataAlert('Промах', 'slip');
+                    dataAlert('Промах...', 'slip');
                 }
             }
 
@@ -358,7 +359,7 @@ window.onload = function load() {
             }
 
             if (kills == enemyShips.length) {
-                alert('Победа за ' + (hitsArray.length-1) + ' ходов. Можно было и лучше...');
+                dataAlert('Победа! Количество выстрелов: ' + (hitsArray.length-1) + '. Можно было и лучше...', 'game-over');
                 log('Winner winner chicken dinner!', target);
                 gameOver = true;
             }
@@ -370,7 +371,7 @@ window.onload = function load() {
 
         enemyArray[i].addEventListener('contextmenu', function(e) {
             var target = (newEnemyArray.indexOf(e.target)+1);
-            enemyArray[target-1].classList.add('slip');
+            enemyArray[target-1].classList.add('noneUser');
             e.preventDefault();
         });
     }
@@ -525,7 +526,8 @@ window.onload = function load() {
 
         var mouseoverEvent = new Event('mouseover');
         var installed = 0;
-        document.querySelector('.enemy-field').classList.add('waiting');
+        document.querySelector('.area__alert').style.display = "block";
+        document.querySelector('.area__alert p').innerHTML = 'Расставьте свои корабли';
 
         userArray[i].addEventListener('click', function(e) {
             if (userShips[numberShip] === undefined) {
@@ -620,7 +622,9 @@ window.onload = function load() {
                 userShips[numberShip].installed = true;
                 installed = installed + 1;
                 if (installed == userShips.length) {
-                    document.querySelector('.enemy-field').classList.remove('waiting');
+                    document.querySelector('.area__alert p').innerHTML = 'Ход компьютера';
+                    document.querySelector('.area__alert').style.display = "none";
+                    dataAlert('Вы начинаете первым!<br>ЛКМ - сделать выстрел<br>ПКМ - отметить пустое поле точкой', 'game-over');
                 }
             }
         });
@@ -663,7 +667,7 @@ window.onload = function load() {
     function compShot() {
         console.log('-------------------------------------------------');
 //        fire.disabled = true;
-        document.querySelector('.enemy-field').classList.add('waiting');
+        document.querySelector('.area__alert').style.display = "block";
 
         if (gameOver == true) {
             alert('Игра окончена.');
@@ -768,7 +772,7 @@ window.onload = function load() {
 
                         if (killsUser == userShips.length) {
                             gameOver = true;
-                            alert('Компьютер победил за ' + killsUserCount + ' ходов. Он оказался сильнее, чем ты, сори.');
+                            dataAlert('Компьютер победил! Количество выстрелов: ' + killsUserCount + '. Он оказался сильнее, чем ты, sorry.', 'game-over');
                         }
                     }
                     setTimeout(compShot, 1000);
@@ -782,7 +786,7 @@ window.onload = function load() {
         killsUserCount = killsUserCount + 1;
         shotVars.splice(getShotIndex(shotVars, target), 1);
 //        fire.disabled = false;
-        document.querySelector('.enemy-field').classList.remove('waiting');
+        document.querySelector('.area__alert').style.display = "none";
     }
 
     function getShotIndex(array, target) {
@@ -822,328 +826,28 @@ window.onload = function load() {
         }
     }
 
-//    var fire = document.querySelector('.fire');
-//    var shot = false;
-//    var vertical = false;
-//    var horizontal = false;
-//    var lastShot;
-//    var lastShotVars = [];
-//    var shotArray = [];
-//    var shotHitArray = [];
-//    var currentShip;
-//
-//    fire.onclick = function() {
-//        console.log('-------------------------------------------------');
-//        var repeatShot = true;
-//        var repeatShotCount = 0;
-//        var orientation;
-//
-//        if (shot == true) {
-//            if (horizontal == true) {
-//                orientation = 0;
-//            } else if (vertical == true) {
-//                orientation = 1;
-//            } else {
-//                orientation = getRandomInt(0, 1);
-//            }
-//
-//            if (orientation == 0) {
-//                console.log('было попадание');
-//                lastShotVars = [lastShot+1, lastShot-1];
-//                console.log('vertical = ' + vertical);
-//                console.log('horizontal = ' + horizontal);
-//
-//                var positionLastShot = getRandomInt(0, lastShotVars.length-1);
-//                console.log('lastShotVars = ' + lastShotVars);
-//                console.log('positionLastShot = ' + positionLastShot);
-//                target = lastShotVars[positionLastShot];
-//                console.log('target = ' + target);
-//
-//                while (repeatShot) {
-//                    repeatShotCount = 0;
-//                    for (var i=0; i < shotArray.length; i++) {
-//                        if (shotArray[i] == target) {
-//                            repeatShotCount = repeatShotCount + 1;
-//                            console.log('repeatShotCount = ' + repeatShotCount);
-//                        }
-//                    }
-//                    if (repeatShotCount > 0) {
-//                        lastShotVars.splice(positionLastShot, 1);
-//
-//                        if (lastShotVars.length == 0) {
-//                            console.log('lastShotVars.length == 0');
-//                            if (userShips[currentShip].hits == 3) {
-//                                lastShotVars.push(shotHitArray[shotHitArray.length-3]-1);
-//                                lastShotVars.push(shotHitArray[shotHitArray.length-3]+1);
-//                            } else {
-//                                lastShotVars.push(shotHitArray[shotHitArray.length-2]-1);
-//                                lastShotVars.push(shotHitArray[shotHitArray.length-2]+1);
-//                            }
-//                        }
-//
-//                        positionLastShot = getRandomInt(0, lastShotVars.length-1);
-//                        target = lastShotVars[positionLastShot];
-//                        console.log('target = ' + target);
-//                    } else {
-//                        repeatShot = false;
-//                    }
-//                }
-//            }
-//
-//            if (orientation == 1) {
-//                console.log('было попадание');
-//                lastShotVars = [lastShot+10, lastShot-10];
-//                console.log('vertical = ' + vertical);
-//                console.log('horizontal = ' + horizontal);
-//
-//                var positionLastShot = getRandomInt(0, lastShotVars.length-1);
-//                console.log('lastShotVars = ' + lastShotVars);
-//                console.log('positionLastShot = ' + positionLastShot);
-//                target = lastShotVars[positionLastShot];
-//                console.log('target = ' + target);
-//
-//                while (repeatShot) {
-//                    repeatShotCount = 0;
-//                    for (var i=0; i < shotArray.length; i++) {
-//                        if (shotArray[i] == target) {
-//                            repeatShotCount = repeatShotCount + 1;
-//                            console.log('repeatShotCount = ' + repeatShotCount);
-//                        }
-//                    }
-//                    if (repeatShotCount > 0) {
-//                        lastShotVars.splice(positionLastShot, 1);
-//
-//                        if (lastShotVars.length == 0) {
-//                            console.log('lastShotVars.length == 0');
-//                            if (userShips[currentShip].hits == 3) {
-//                                lastShotVars.push(shotHitArray[shotHitArray.length-3]-10);
-//                                lastShotVars.push(shotHitArray[shotHitArray.length-3]+10);
-//                            } else {
-//                                lastShotVars.push(shotHitArray[shotHitArray.length-2]-10);
-//                                lastShotVars.push(shotHitArray[shotHitArray.length-2]+10);
-//                            }
-//                        }
-//
-//                        positionLastShot = getRandomInt(0, lastShotVars.length-1);
-//                        target = lastShotVars[positionLastShot];
-//                        console.log('target = ' + target);
-//                    } else {
-//                        repeatShot = false;
-//                    }
-//                }
-//            }
-//        } else {
-//            var target = getRandomInt(0, 99);
-//
-//            while (repeatShot) {
-//                if (shotArray.length > 9999) {
-//                    console.log('Больше некуда стрелять');
-//                    return;
-//                }
-//
-//                repeatShotCount = 0;
-//
-//                for (var i=0; i < shotArray.length; i++) {
-//                    if (shotArray[i] == target) {
-//                        repeatShotCount = repeatShotCount + 1;
-//                    }
-//                }
-//                if (repeatShotCount > 0) {
-//                    target = getRandomInt(0, 99);
-//                } else {
-//                    repeatShot = false;
-//                }
-//            }
-//        }
-//
-//        for (var y = 0; y < userShips.length; y++) {
-//            for (var x = 0; x < userShips[y].dataLength; x++) {
-//                if (target == userShips[y]["position" + x]) {
-//                    console.log('target = ' + target);
-//                    userArray[target].classList.add('hitting');
-//                    userShips[y].hits = userShips[y].hits + 1;
-//                    currentShip = y;
-//                    shotArray.push(target);
-//                    shotHitArray.push(target);
-//                    shot = true;
-//
-//                    if (lastShot == target-10 || lastShot == target+10) {
-//                        vertical = true;
-//                        horizontal = false;
-//                    } else if (lastShot == target-1 || lastShot == target+1) {
-//                        vertical = false;
-//                        horizontal = true;
-//                    }
-//                    console.log('vertical =' + vertical);
-//                    console.log('horizontal =' + horizontal);
-//
-//                    lastShot = target;
-////                    hitsArray.push(target);
-////                    added = true;
-////                    hit = true;
-//
-//                    if (userShips[y].hits == userShips[y].dataLength) {
-//                        userShips[y].killed = true;
-//                        shot = false;
-//                        vertical = false;
-//                        horizontal = false;
-//                        currentShip = NaN;
-////                        kills = kills + 1;
-//                        for (var i = 0; i < userShips[y].dataLength; i++) {
-//                            shotArray.push(userShips[y]["position" + i] + 1);
-//                            shotArray.push(userShips[y]["position" + i] - 9);
-//                            shotArray.push(userShips[y]["position" + i] - 1);
-//                            shotArray.push(userShips[y]["position" + i] + 9);
-//                            shotArray.push(userShips[y]["position" + i] + 10);
-//                            shotArray.push(userShips[y]["position" + i] + 11);
-//                            shotArray.push(userShips[y]["position" + i] - 10);
-//                            shotArray.push(userShips[y]["position" + i] - 11);
-////                            userArray[userShips[y]["position" + i] + 1].classList.add('slip');
-////                            userArray[userShips[y]["position" + i] - 9].classList.add('slip');
-////                            userArray[userShips[y]["position" + i] + 9].classList.add('slip');
-////                            userArray[userShips[y]["position" + i] - 1].classList.add('slip');
-////                            userArray[userShips[y]["position" + i] + 10].classList.add('slip');
-////                            userArray[userShips[y]["position" + i] + 11].classList.add('slip');
-////                            userArray[userShips[y]["position" + i] - 10].classList.add('slip');
-////                            userArray[userShips[y]["position" + i] - 11].classList.add('slip');
-//                        }
-//                    }
-//
-//                    if (shot == true) {
-//                        while (repeatShot) {
-//                            repeatShotCount = 0;
-//                            for (var i=0; i < shotArray.length; i++) {
-//                                if (shotArray[i] == target-10) {
-//                                    repeatShotCount = repeatShotCount + 1;
-//                                    console.log('repeatShotCount = ' + repeatShotCount);
-//                                }
-//                                if (shotArray[i] == target+10) {
-//                                    repeatShotCount = repeatShotCount + 1;
-//                                    console.log('repeatShotCount = ' + repeatShotCount);
-//                                }
-//                            }
-//                            if (repeatShotCount >= 2) {
-//                                vertical = false;
-//                                horizontal = true;
-//                            } else {
-//                                repeatShot = false;
-//                            }
-//                        }
-//
-//                        while (repeatShot) {
-//                            repeatShotCount = 0;
-//                            for (var i=0; i < shotArray.length; i++) {
-//                                if (shotArray[i] == target-1) {
-//                                    repeatShotCount = repeatShotCount + 1;
-//                                    console.log('repeatShotCount = ' + repeatShotCount);
-//                                }
-//                                if (shotArray[i] == target+1) {
-//                                    repeatShotCount = repeatShotCount + 1;
-//                                    console.log('repeatShotCount = ' + repeatShotCount);
-//                                }
-//                            }
-//                            if (repeatShotCount >= 2) {
-//                                vertical = true;
-//                                horizontal = false;
-//                            } else {
-//                                repeatShot = false;
-//                            }
-//                        }
-//                    }
-//                    return;
-//                }
-//            }
-//        }
-//        console.log('target = ' + target);
-//        userArray[target].classList.add('slip');
-//        shotArray.push(target);
-//        console.log('shot = ' + shot);
-//        if (shot == true && userShips[currentShip].hits == 1) {
-//
-//            repeatShot = true;
-//            while (repeatShot) {
-//                repeatShotCount = 0;
-//                for (var i=0; i < shotArray.length; i++) {
-//                    if (shotArray[i] == lastShot-10) {
-//                        repeatShotCount = repeatShotCount + 1;
-//                        console.log('repeatShotCount = ' + repeatShotCount);
-//                        console.log('lastShot = ' + lastShot);
-//                        console.log('lastShot - 10 = ' + (lastShot - 10));
-//                        console.log('shotArray = ' + shotArray);
-//                    }
-//                    if (shotArray[i] == lastShot+10) {
-//                        repeatShotCount = repeatShotCount + 1;
-//                        console.log('repeatShotCount = ' + repeatShotCount);
-//                        console.log('lastShot = ' + lastShot);
-//                        console.log('lastShot + 10 = ' + (lastShot + 10));
-//                        console.log('shotArray = ' + shotArray);
-//                    }
-//                }
-//                if (repeatShotCount >= 2) {
-//                    vertical = false;
-//                    horizontal = true;
-//                    repeatShot = false;
-//                } else {
-//                    repeatShot = false;
-//                }
-//            }
-//
-//            repeatShot = true;
-//            while (repeatShot) {
-//                repeatShotCount = 0;
-//                for (var i=0; i < shotArray.length; i++) {
-//                    if (shotArray[i] == lastShot-1) {
-//                        repeatShotCount = repeatShotCount + 1;
-//                        console.log('repeatShotCount = ' + repeatShotCount);
-//                        console.log('lastShot = ' + lastShot);
-//                        console.log('lastShot - 1 = ' + (lastShot - 1));
-//                        console.log('shotArray = ' + shotArray);
-//                    }
-//                    if (shotArray[i] == lastShot+1) {
-//                        repeatShotCount = repeatShotCount + 1;
-//                        console.log('repeatShotCount = ' + repeatShotCount);
-//                        console.log('lastShot = ' + lastShot);
-//                        console.log('lastShot - 1 = ' + (lastShot + 1));
-//                        console.log('shotArray = ' + shotArray);
-//                    }
-//                }
-//                if (repeatShotCount >= 2) {
-//                    vertical = true;
-//                    horizontal = false;
-//                    repeatShot = false;
-//                } else {
-//                    repeatShot = false;
-//                }
-//            }
-//        }
-//
-//        console.log('vertical =' + vertical);
-//        console.log('horizontal =' + horizontal);
-//    }
-
     function dataAlert(text, mode) {
-        if (document.querySelector('.alert')) {
-            document.querySelector('.alert').parentNode.removeChild(document.querySelector('.alert'));
-        }
-
-        var p = document.createElement('p');
-        var table = document.querySelector('.enemy-field');
+        var alerts = document.querySelector('.alerts');
+        var p = document.querySelector('.alerts p');
+        $('.alerts p').removeClass();
+        $('.alerts p').html(text)
 
         if (mode == "slip") {
-            p.className = "alert alert-slip";
+            $('.alerts p').addClass('animated jello');
         }
         if (mode == "hit") {
-            p.className = "alert alert-hit";
+            $('.alerts p').addClass('animated bounceIn');
         }
         if (mode == "kill") {
-            p.className = "alert alert-kill";
+            $('.alerts p').addClass('animated tada');
+        }
+        if (mode == "game-over") {
+            $('.alerts p').addClass('animated flipInX');
         }
 
-        p.innerHTML = text;
-        table.appendChild(p);
-        setTimeout(function(){
-            document.querySelector('.alert').parentNode.removeChild(document.querySelector('.alert'));
-        },1500);
+        setTimeout(function () {
+            $('.alerts p').removeClass();
+        }, 1000);
     }
 
     function log(text, target) {
